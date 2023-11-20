@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<TargetFrameworks>net7.0</TargetFrameworks>
+		<NoWarn>1701;1702;CS1998</NoWarn>
+	</PropertyGroup>
+	
+	<ItemGroup>
+	  <ProjectReference Include="..\App.Client\App.Client.csproj" />
+	</ItemGroup>
+
+</Project>

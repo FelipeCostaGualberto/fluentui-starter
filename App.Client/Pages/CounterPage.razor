@@ -1,0 +1,16 @@
+﻿<h1>Counter</h1>
+
+<p role="status">Current count: <FluentBadge Appearance="Appearance.Accent">@_currentCount</FluentBadge></p>
+
+<FluentButton Appearance="Appearance.Accent" @onclick="IncrementCount">Click me</FluentButton>
+
+@code {
+    @attribute [Route(Route)]
+    public const string Route = "counter";
+    private int _currentCount = 0;
+
+    private void IncrementCount()
+    {
+        _currentCount++;
+    }
+}

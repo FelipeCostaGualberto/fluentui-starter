@@ -1,0 +1,32 @@
+﻿<h1>Weather forecast</h1>
+
+<p>This component demonstrates fetching data from a service.</p>
+
+@if (ForecastList == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <FluentDataGrid Items=@ForecastList.AsQueryable() GridTemplateColumns="1fr 1fr 1fr 2fr">
+        <PropertyColumn Title="Date" Property="@(c => c.Date)" Sortable="true" Align=Align.Start />
+        <PropertyColumn Title="Temp. (C)" Property="@(c => c.TemperatureC)" Sortable="true" Align=Align.Center />
+        <PropertyColumn Title="Temp. (F)" Property="@(c => c.TemperatureF)" Sortable="true" Align=Align.Center />
+        <PropertyColumn Title="Summary" Property="@(c => c.Summary)" Sortable="true" Align=Align.End />
+    </FluentDataGrid>
+}
+
+@code {
+    @using App.Client.Data;
+
+    @attribute [Route(Route)]
+    public const string Route = "fetch-data";
+
+    [Inject] private FetchDataService _forecastService { get; set; }
+    private List<WeatherForecast> ForecastList;
+
+    protected override async Task OnInitializedAsync()
+    {
+        ForecastList = await _forecastService.GetList(DateTime.Now);
+    }
+}
