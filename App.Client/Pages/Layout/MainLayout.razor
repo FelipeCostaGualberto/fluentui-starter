@@ -50,7 +50,7 @@
             <FluentBodyContent id="body-content" Style="height: calc(100dvh - 90px);">
                 <div class="content">
                     <article id="article">
-                        <FluentMessageBarContainer Section="@ClientConstants.MESSAGES_TOP" />
+                        <FluentMessageBarProvider Section="@ClientConstants.MESSAGES_TOP" />
 
                         <CascadingValue Value=@OnRefreshTableOfContents>
                             @Body
@@ -61,7 +61,7 @@
                         <ConsoleLog />
                     </aside>
 
-                    <FluentToastContainer MaxToastCount="10" />
+                    <FluentToastProvider MaxToastCount="10" />
                     <FluentDialogProvider />
                     <FluentTooltipProvider />
                 </div>

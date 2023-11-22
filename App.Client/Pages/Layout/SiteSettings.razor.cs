@@ -1,6 +1,6 @@
 using App.Client.Infrastructure;
 using Microsoft.AspNetCore.Components;
-using Microsoft.Fast.Components.FluentUI;
+using Microsoft.FluentUI.AspNetCore.Components;
 using System.Threading.Tasks;
 
 namespace App.Client.Pages.Layout;

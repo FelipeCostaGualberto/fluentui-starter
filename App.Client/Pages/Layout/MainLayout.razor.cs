@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 using App.Client.Infrastructure;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Routing;
-using Microsoft.Fast.Components.FluentUI;
-using Microsoft.Fast.Components.FluentUI.DesignTokens;
+using Microsoft.FluentUI.AspNetCore.Components;
+using Microsoft.FluentUI.AspNetCore.Components.DesignTokens;
 using Microsoft.JSInterop;
 
 namespace App.Client.Pages.Layout;

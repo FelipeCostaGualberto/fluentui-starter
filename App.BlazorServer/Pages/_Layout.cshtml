@@ -1,13 +1,16 @@
 ﻿@using Microsoft.AspNetCore.Components.Web
 @namespace FluentUIBlazorServerApp.Pages
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-
 <!DOCTYPE html>
+
 <html lang="en-us">
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fluent UI Starter</title>
     <base href="~/" />
+    <link href="_content/Microsoft.FluentUI.AspNetCore.Components/css/reboot.css" rel="stylesheet" />
     <link href="_content/App.Client/css/fluentui.css" rel="stylesheet" />
     <link href="_content/App.Client/css/site.css" rel="stylesheet" />
     <link href="App.BlazorServer.styles.css" rel="stylesheet" />
@@ -19,6 +22,7 @@
 
     <component type="typeof(HeadOutlet)" render-mode="Server" />
 </head>
+
 <body>
     @RenderBody()
 
@@ -33,7 +37,7 @@
         <a class="dismiss">🗙</a>
     </div>
 
-    <script src="_content/Microsoft.Fast.Components.FluentUI/js/web-components-v2.5.16.min.js" type="module" async></script>
+    <script src="_content/Microsoft.FluentUI.AspNetCore.Components/js/web-components-v2.5.16.min.js" type="module" async></script>
     <script src="_content/App.Client/js/theme.js" type="module"></script>
     <script src="_framework/blazor.server.js"></script>
 </body>

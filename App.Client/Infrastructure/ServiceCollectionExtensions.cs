@@ -1,6 +1,6 @@
 ﻿using App.Client.Data;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Fast.Components.FluentUI;
+using Microsoft.FluentUI.AspNetCore.Components;
 
 namespace App.Client.Infrastructure;
 
