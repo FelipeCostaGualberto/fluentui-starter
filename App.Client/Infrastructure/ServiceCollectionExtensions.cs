@@ -10,5 +10,8 @@ public static class ServiceCollectionExtensions
     {
         services.AddFluentUIComponents(new LibraryConfiguration());
         services.AddSingleton<FetchDataService>();
+        // Demo
+        services.AddScoped<CacheStorageAccessor>();
+        services.AddHttpClient<IStaticAssetService, HttpBasedStaticAssetService>();
     }
 }

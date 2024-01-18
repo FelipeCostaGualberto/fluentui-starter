@@ -49,13 +49,12 @@ if (!bodycontent) {
     bodycontent = document.body;
 }
 
-bodycontent.onscroll = function ()
-{ 
+bodycontent.onscroll = function () {
     scrollFunction()
 };
 
 function scrollFunction() {
-    if (document.body.scrollTop > 20 ||document.getElementById('body-content').scrollTop > 20 || document.documentElement.scrollTop > 20) {
+    if (document.body.scrollTop > 20 || document.getElementById('body-content').scrollTop > 20 || document.documentElement.scrollTop > 20) {
         backToTopButton.style.display = "flex";
     } else {
         backToTopButton.style.display = "none";
@@ -70,6 +69,6 @@ export function backToTop() {
 }
 
 // Very simple check to see if mobile or tablet is being used 
-export function isMobile() {
+export function isDevice() {
     return /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini|mobile/i.test(navigator.userAgent);
 }

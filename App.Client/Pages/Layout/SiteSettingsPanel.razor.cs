@@ -1,144 +1,84 @@
+using App.Client.Infrastructure;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Logging;
 using Microsoft.FluentUI.AspNetCore.Components;
-using Microsoft.FluentUI.AspNetCore.Components.DesignTokens;
-using Microsoft.JSInterop;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace App.Client.Pages.Layout;
 
-public partial class SiteSettingsPanel : IDialogContentComponent<GlobalState>, IAsyncDisposable
+public partial class SiteSettingsPanel
 {
-    [Parameter] public GlobalState Content { get; set; }
-    [Inject] private GlobalState GlobalState { get; set; }
-    [Inject] private IJSRuntime JSRuntime { get; set; }
-    [Inject] private BaseLayerLuminance BaseLayerLuminance { get; set; }
-    [Inject] private AccentBaseColor AccentBaseColor { get; set; }
-    [Inject] private Direction Direction { get; set; }
-    private const string _themeSettingSystem = "System";
-    private const string _themeSettingDark = "Dark";
-    private const string _themeSettingLight = "Light";
-    private string _currentTheme = _themeSettingSystem;
-    private LocalizationDirection _dir;
-    private OfficeColor _selectedColorOption;
-    private bool _rtl;
-    private IJSObjectReference _jsModule;
-    private ElementReference _container;
+    private string _status;
+    private bool _popVisible;
+    private bool _ltr = true;
+    private FluentDesignTheme _theme;
 
-    protected override void OnInitialized()
+    [Inject]
+    public required ILogger<SiteSettingsPanel> Logger { get; set; }
+
+    [Inject]
+    public required CacheStorageAccessor CacheStorageAccessor { get; set; }
+
+    [Inject]
+    public required GlobalState GlobalState { get; set; }
+
+    public DesignThemeModes Mode { get; set; }
+
+    public OfficeColor? OfficeColor { get; set; }
+
+    public LocalizationDirection? Direction { get; set; }
+
+    private static IEnumerable<DesignThemeModes> AllModes => Enum.GetValues<DesignThemeModes>();
+
+    private static IEnumerable<OfficeColor?> AllOfficeColors
     {
-        _rtl = Content.Dir == LocalizationDirection.rtl;
-        _container = Content.Container;
-
-        OfficeColor[] colors = Enum.GetValues<OfficeColor>();
-        _selectedColorOption = colors.Where(x => x.ToAttributeValue() == Content.Color).FirstOrDefault();
-
-        if (_selectedColorOption == OfficeColor.Default)
+        get
         {
-            _selectedColorOption = colors[new Random().Next(colors.Length)];
-
-            Content.Color = _selectedColorOption.ToAttributeValue();
+            return Enum.GetValues<OfficeColor>().Select(i => (OfficeColor?)i);
         }
     }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override void OnAfterRender(bool firstRender)
     {
-        if (!firstRender) return;
-        _jsModule = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/App.Client/js/theme.js");
-
-        _currentTheme = await _jsModule.InvokeAsync<string>("getThemeCookieValue");
-        StateHasChanged();
-    }
-
-    public async Task UpdateDirectionAsync()
-    {
-        _dir = _rtl ? LocalizationDirection.rtl : LocalizationDirection.ltr;
-
-        Content.Dir = _dir;
-
-        await _jsModule.InvokeVoidAsync("switchDirection", _dir.ToString());
-        await Direction.WithDefault(_dir.ToAttributeValue());
-
-        StateHasChanged();
-    }
-
-    private async Task UpdateThemeAsync()
-    {
-        if (_jsModule is not null)
+        if (firstRender)
         {
-            StandardLuminance newLuminance = await GetBaseLayerLuminanceForSetting(_currentTheme);
-
-            await BaseLayerLuminance.WithDefault(newLuminance.GetLuminanceValue());
-            GlobalState.SetLuminance(newLuminance);
-            await _jsModule.InvokeVoidAsync("switchHighlightStyle", newLuminance == StandardLuminance.DarkMode);
-            await _jsModule.InvokeVoidAsync("setThemeCookie", _currentTheme);
-        }
-
-        //_currentTheme = newValue;
-    }
-
-    private async Task UpdateColorAsync(ChangeEventArgs args)
-    {
-        string value = args.Value?.ToString();
-        if (!string.IsNullOrEmpty(value))
-        {
-            if (value != "default")
-            {
-                await AccentBaseColor.WithDefault(value.ToSwatch());
-            }
-            else
-            {
-                await AccentBaseColor.WithDefault("#0078D4".ToSwatch());
-            }
-
-            Content.Color = value;
+            Direction = GlobalState.Dir;
+            _ltr = !Direction.HasValue || Direction.Value == LocalizationDirection.LeftToRight;
         }
     }
 
-    private Task<StandardLuminance> GetBaseLayerLuminanceForSetting(string setting)
+    protected void HandleDirectionChanged(bool isLeftToRight)
     {
-        if (setting == _themeSettingLight)
-        {
-            return Task.FromResult(StandardLuminance.LightMode);
-        }
-        else if (setting == _themeSettingDark)
-        {
-            return Task.FromResult(StandardLuminance.DarkMode);
-        }
-        else // "System"
-        {
-            return GetSystemThemeLuminance();
-        }
+
+        _ltr = isLeftToRight;
+        Direction = isLeftToRight ? LocalizationDirection.LeftToRight : LocalizationDirection.RightToLeft;
     }
 
-    private async Task<StandardLuminance> GetSystemThemeLuminance()
+    private async Task ResetSite()
     {
-        if (_jsModule is not null)
-        {
-            var systemTheme = await _jsModule.InvokeAsync<string>("getSystemTheme");
-            if (systemTheme == _themeSettingDark)
-            {
-                return StandardLuminance.DarkMode;
-            }
-        }
+        string msg = "Site settings reset and cache cleared!";
 
-        return StandardLuminance.LightMode;
+        await CacheStorageAccessor.RemoveAllAsync();
+        _theme?.ClearLocalStorageAsync();
+
+        Logger.LogInformation(msg);
+        _status = msg;
+
+        OfficeColor = OfficeColorUtilities.GetRandom();
+        Mode = DesignThemeModes.System;
     }
 
-    public async ValueTask DisposeAsync()
+    private static string GetCustomColor(OfficeColor? color)
     {
-        try
+        return color switch
         {
-            if (_jsModule is not null)
-            {
-                await _jsModule.DisposeAsync();
-            }
-        }
-        catch (JSDisconnectedException)
-        {
-            // The JSRuntime side may routinely be gone already if the reason we're disposing is that
-            // the client disconnected. This is not an error.
-        }
+            null => OfficeColorUtilities.GetRandom(true).ToAttributeValue(),
+            Microsoft.FluentUI.AspNetCore.Components.OfficeColor.Default => "#036ac4",
+            _ => color.ToAttributeValue(),
+        };
+
     }
 }

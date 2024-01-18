@@ -1,5 +1,4 @@
 using App.Client.Infrastructure;
-using Microsoft.AspNetCore.Components;
 using Microsoft.FluentUI.AspNetCore.Components;
 using System.Threading.Tasks;
 
@@ -7,17 +6,15 @@ namespace App.Client.Pages.Layout;
 
 public partial class SiteSettings
 {
-    [Inject] private GlobalState GlobalState { get; set; }
     private IDialogReference _dialog;
-
+    
     private async Task OpenSiteSettingsAsync()
     {
         DemoLogger.WriteLine($"Open site settings");
-        _dialog = await DialogService.ShowPanelAsync<SiteSettingsPanel>(GlobalState, new DialogParameters<GlobalState>()
+        _dialog = await DialogService.ShowPanelAsync<SiteSettingsPanel>(new DialogParameters()
         {
             ShowTitle = true,
             Title = "Site settings",
-            Content = GlobalState,
             Alignment = HorizontalAlignment.Right,
             PrimaryAction = "OK",
             SecondaryAction = null,
@@ -25,27 +22,5 @@ public partial class SiteSettings
         });
 
         DialogResult result = await _dialog.Result;
-        HandlePanel(result);
-    }
-
-    private void HandlePanel(DialogResult result)
-    {
-        if (result.Cancelled)
-        {
-            DemoLogger.WriteLine($"Site settings panel dismissed");
-            return;
-        }
-
-        if (result.Data is not null)
-        {
-            GlobalState state = result.Data as GlobalState;
-
-            GlobalState.SetDirection(state.Dir);
-            GlobalState.SetLuminance(state.Luminance);
-            GlobalState.SetColor(state.Color);
-
-            DemoLogger.WriteLine($"Site settings panel closed");
-            return;
-        }
     }
 }
