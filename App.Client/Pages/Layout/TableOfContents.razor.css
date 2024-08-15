@@ -3,9 +3,9 @@
     text-overflow: ellipsis;
 }
 
-::deep ul:first-of-type {
-    padding-left: 1rem;
-}
+    ::deep ul:first-of-type {
+        padding-left: 1rem;
+    }
 
 [dir="rtl"] * ::deep ul:first-of-type {
     padding-right: 1rem;

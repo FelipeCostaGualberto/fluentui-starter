@@ -11,31 +11,14 @@ namespace App.Client.Pages.Layout;
 
 public partial class TableOfContents : IAsyncDisposable
 {
+    [Parameter] public string Heading { get; set; } = "In this article";
+    [Parameter] public bool ShowBackButton { get; set; } = true;
+    [Parameter] public RenderFragment ChildContent { get; set; }
     [Inject] protected IJSRuntime Js { get; set; }
     [Inject] protected NavigationManager Navigation { get; set; }
     private Anchor[] _anchors;
     private bool _expanded = true;
     private IJSObjectReference _jsModule;
-
-    /// <summary>
-    /// Gets or sets the heading for the ToC 
-    /// Defaults to 'In this article'
-    /// </summary>
-    [Parameter]
-    public string Heading { get; set; } = "In this article";
-
-    /// <summary>
-    /// Gets or sets if a 'Back to top' button should be rendered.
-    /// Defaults to true
-    /// </summary>
-    [Parameter]
-    public bool ShowBackButton { get; set; } = true;
-
-    /// <summary>
-    /// Gets or sets the content to be rendered inside the component.
-    /// </summary>
-    [Parameter]
-    public RenderFragment ChildContent { get; set; }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -44,18 +27,24 @@ public partial class TableOfContents : IAsyncDisposable
             // Remember to replace the location of the script with your own project specific location.
             _jsModule = await Js.InvokeAsync<IJSObjectReference>("import", "./_content/App.Client/Pages/Layout/TableOfContents.razor.js");
 
-            var isMobile = await _jsModule.InvokeAsync<bool>("isMobile");
+            var isMobile = await _jsModule!.InvokeAsync<bool>("isMobile");
 
             if (isMobile)
             {
                 _expanded = false;
             }
+
+            await BackToTop();
             await QueryDom();
         }
     }
 
     private async Task BackToTop()
     {
+        if (_jsModule is null)
+        {
+            return;
+        }
         await _jsModule.InvokeAsync<Anchor[]>("backToTop");
     }
 
@@ -79,13 +68,12 @@ public partial class TableOfContents : IAsyncDisposable
 
     private bool AnchorsEqual(Anchor[] firstSet, Anchor[] secondSet)
     {
-        return (firstSet ?? Array.Empty<Anchor>())
-            .SequenceEqual(secondSet ?? Array.Empty<Anchor>());
+        return (firstSet ?? [])
+            .SequenceEqual(secondSet ?? []);
     }
 
     protected override void OnInitialized()
     {
-        // Subscribe to the event
         Navigation.LocationChanged += LocationChanged;
     }
 
@@ -93,11 +81,11 @@ public partial class TableOfContents : IAsyncDisposable
     {
         try
         {
+            await BackToTop();
             await QueryDom();
         }
         catch (Exception)
         {
-            // Already disposed
         }
     }
 
@@ -112,7 +100,7 @@ public partial class TableOfContents : IAsyncDisposable
         {
             return new RenderFragment(builder =>
             {
-                int i = 0;
+                var i = 0;
 
                 builder.OpenElement(i++, "ul");
                 foreach (Anchor item in items)
@@ -142,7 +130,6 @@ public partial class TableOfContents : IAsyncDisposable
                 builder.AddContent(0, ChildContent);
             });
         }
-
     }
 
     async ValueTask IAsyncDisposable.DisposeAsync()
@@ -157,7 +144,7 @@ public partial class TableOfContents : IAsyncDisposable
                 await _jsModule.DisposeAsync();
             }
         }
-        catch (JSDisconnectedException)
+        catch (Exception ex) when (ex is JSDisconnectedException || ex is OperationCanceledException)
         {
             // The JSRuntime side may routinely be gone already if the reason we're disposing is that
             // the client disconnected. This is not an error.
@@ -168,7 +155,10 @@ public partial class TableOfContents : IAsyncDisposable
     {
         public virtual bool Equals(Anchor other)
         {
-            if (other is null) return false;
+            if (other is null)
+            {
+                return false;
+            }
 
             if (Level != other.Level ||
                 Text != other.Text ||
@@ -193,6 +183,7 @@ public partial class TableOfContents : IAsyncDisposable
             return true;
         }
 
-        public override int GetHashCode() => HashCode.Combine(Level, Text, Href);
+        public override int GetHashCode()
+             => HashCode.Combine(Level, Text, Href);
     }
 }
