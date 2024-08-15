@@ -1,4 +1,5 @@
 using App.Client.Infrastructure;
+using Microsoft.AspNetCore.Components;
 using Microsoft.FluentUI.AspNetCore.Components;
 using System.Threading.Tasks;
 
@@ -7,7 +8,8 @@ namespace App.Client.Pages.Layout;
 public partial class SiteSettings
 {
     private IDialogReference _dialog;
-    
+    [Inject] private IDialogService DialogService { get; set; }
+
     private async Task OpenSiteSettingsAsync()
     {
         DemoLogger.WriteLine($"Open site settings");
