@@ -4,9 +4,9 @@
 @inject IMessageService MessageService
 
 <FluentButton BackgroundColor="var(--neutral-layer-4)" OnClick="OpenNotificationCenterAsync" Title="Notification center">
-@if (MessageService.Count(ClientConstants.MESSAGES_NOTIFICATION_CENTER) > 0)
+@if (MessageService.Count(AppClient.MESSAGES_NOTIFICATION_CENTER) > 0)
 {
-    <FluentCounterBadge Count="@MessageService.Count(ClientConstants.MESSAGES_NOTIFICATION_CENTER)"
+    <FluentCounterBadge Count="@MessageService.Count(AppClient.MESSAGES_NOTIFICATION_CENTER)"
                         Max="9"
                         ShowOverflow="true"
                         BackgroundColor="@Color.Error"

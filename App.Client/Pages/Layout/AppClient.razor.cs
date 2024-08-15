@@ -1,7 +1,10 @@
-﻿namespace App.Client.Infrastructure;
+﻿using System.Reflection;
 
-public class ClientConstants
+namespace App.Client.Pages.Layout;
+
+public partial class AppClient
 {
+    public Assembly ClientAssembly { get; set; }
     public const string MESSAGES_NOTIFICATION_CENTER = "NOTIFICATION_CENTER";
     public const string MESSAGES_TOP = "TOP";
     public const string MESSAGES_DIALOG = "DIALOG";

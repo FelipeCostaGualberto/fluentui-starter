@@ -1,6 +1,4 @@
-﻿@using System.Reflection;
-
-<FluentDesignTheme StorageName="theme" />
+﻿<FluentDesignTheme StorageName="theme" />
 
 <Router AppAssembly="@ClientAssembly" AdditionalAssemblies="new[] { typeof(AppClient).Assembly }">
     <Found Context="routeData">
@@ -13,7 +11,3 @@
         </LayoutView>
     </NotFound>
 </Router>
-
-@code {
-    public Assembly ClientAssembly { get; set; }
-}

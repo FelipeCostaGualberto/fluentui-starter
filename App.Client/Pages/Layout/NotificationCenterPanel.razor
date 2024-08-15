@@ -1,20 +1,17 @@
-﻿@using App.Client.Infrastructure;
-@implements IDialogContentComponent<GlobalState>
+﻿@implements IDialogContentComponent<GlobalState>
 @inject IMessageService MessageService
 
 <div>
     <FluentStack>
         <FluentSpacer />
-        
-        <FluentAnchor Appearance="@Appearance.Hypertext" Href="" @onclick="@(e => MessageService.Clear(ClientConstants.MESSAGES_NOTIFICATION_CENTER) )">
+        <FluentAnchor Appearance="@Appearance.Hypertext" Href="" OnClick="@(e => MessageService.Clear(AppClient.MESSAGES_NOTIFICATION_CENTER) )">
             Dismiss all
         </FluentAnchor>
     </FluentStack>
 
     <br />
 
-    @* <FluentMessageBarContainer Section="@ClientConstants.MESSAGES_NOTIFICATION_CENTER" MaxMessageCount="-1" Type="@MessageType.Notification" /> *@
-    <FluentMessageBarProvider Section="@ClientConstants.MESSAGES_NOTIFICATION_CENTER" MaxMessageCount="-1" Type="@MessageType.Notification" />
+    <FluentMessageBarProvider Section="@AppClient.MESSAGES_NOTIFICATION_CENTER" MaxMessageCount="-1" Type="@MessageType.Notification" />
 </div>
 
 @code {

@@ -4,10 +4,7 @@ using System.Threading.Tasks;
 using App.Client.Infrastructure;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Routing;
-using Microsoft.FluentUI.AspNetCore.Components;
 using Microsoft.FluentUI.AspNetCore.Components.DesignTokens;
-using Microsoft.FluentUI.AspNetCore.Components.Extensions;
-using Microsoft.FluentUI.AspNetCore.Components.Utilities;
 using Microsoft.JSInterop;
 
 namespace App.Client.Pages.Layout;
@@ -28,7 +25,6 @@ public partial class MainLayout : LayoutComponentBase, IAsyncDisposable
     protected override void OnInitialized()
     {
         _version = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
-
         _prevUri = Navigation.Uri;
         Navigation.LocationChanged += OnLocationChanged;
     }
@@ -38,9 +34,7 @@ public partial class MainLayout : LayoutComponentBase, IAsyncDisposable
         if (!firstRender) return;
 
         _jsModule = await Js.GetJsModule(this.GetType());
-
         _isMobile = await _jsModule.InvokeAsync<bool>("isMobile");
-        await _jsModule.DisposeAsync();
     }
 
     public EventCallback OnRefreshTableOfContents => EventCallback.Factory.Create(this, RefreshTableOfContents);
