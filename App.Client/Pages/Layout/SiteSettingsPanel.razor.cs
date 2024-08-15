@@ -3,10 +3,10 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
 using Microsoft.FluentUI.AspNetCore.Components;
 using Microsoft.FluentUI.AspNetCore.Components.Extensions;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using System;
+using System.Linq;
 
 namespace App.Client.Pages.Layout;
 
@@ -58,9 +58,9 @@ public partial class SiteSettingsPanel
         Direction = isLeftToRight ? LocalizationDirection.LeftToRight : LocalizationDirection.RightToLeft;
     }
 
-    private async Task ResetSite()
+    private async Task ResetSiteAsync()
     {
-        string msg = "Site settings reset and cache cleared!";
+        var msg = "Site settings reset and cache cleared!";
 
         await CacheStorageAccessor.RemoveAllAsync();
         _theme?.ClearLocalStorageAsync();

@@ -1,5 +1,7 @@
 ﻿@using System.Reflection;
 
+<FluentDesignTheme StorageName="theme" />
+
 <Router AppAssembly="@ClientAssembly" AdditionalAssemblies="new[] { typeof(AppClient).Assembly }">
     <Found Context="routeData">
         <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />

@@ -8,7 +8,7 @@ public static class ServiceCollectionExtensions
 {
     public static void AddAppClientServices(this IServiceCollection services)
     {
-        services.AddFluentUIComponents(new LibraryConfiguration());
+        services.AddFluentUIComponents();
         services.AddSingleton<FetchDataService>();
         // Demo
         services.AddScoped<CacheStorageAccessor>();
