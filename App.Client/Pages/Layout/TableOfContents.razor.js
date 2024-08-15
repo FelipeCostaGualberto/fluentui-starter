@@ -69,6 +69,6 @@ export function backToTop() {
 }
 
 // Very simple check to see if mobile or tablet is being used 
-export function isDevice() {
+export function isMobile() {
     return /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini|mobile/i.test(navigator.userAgent);
 }

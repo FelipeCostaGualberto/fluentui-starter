@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Routing;
 using Microsoft.FluentUI.AspNetCore.Components;
 using Microsoft.FluentUI.AspNetCore.Components.DesignTokens;
+using Microsoft.FluentUI.AspNetCore.Components.Extensions;
 using Microsoft.JSInterop;
 
 namespace App.Client.Pages.Layout;
