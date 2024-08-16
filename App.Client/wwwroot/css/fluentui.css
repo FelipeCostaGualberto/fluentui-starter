@@ -9,10 +9,6 @@ blockquote p:last-child {
     margin-bottom: 0;
 }
 
-.home div[sm="4"], .home div[sm="6"], .home div[sm="8"] {
-    border-bottom: 1px solid var(--neutral-stroke-divider-rest) !important;
-}
-
 .siteheader {
     background-color: var(--neutral-layer-4) !important;
     border-bottom: calc(var(--stroke-width) * 2px) solid var(--accent-fill-rest);
@@ -65,10 +61,6 @@ blockquote p:last-child {
     padding-left: 10px;
 }
 
-.search-result-icon {
-    vertical-align: middle;
-}
-
 .body-stack {
     flex-direction: row;
 }
@@ -96,7 +88,6 @@ blockquote p:last-child {
             text-decoration: underline;
         }
 
-
 nav.sitenav {
     /*background-color: var(--neutral-layer-1);*/
     padding: 1.5rem 1rem;
@@ -121,7 +112,6 @@ nav h3 {
     pointer-events: none;
 }
 
-
 nav fluent-anchor {
     width: 100%;
     color: var(--fill-color);
@@ -131,7 +121,6 @@ nav fluent-anchor {
         justify-content: start;
         background: var(--accent-fill-rest);
     }
-
 
 .fluent-nav-link.notactive .fluent-nav-text {
     font-weight: 600 !important;
@@ -177,36 +166,16 @@ aside {
     right: 0px;
 }
 
-#color {
-    margin-right: 10px;
-    margin-left: 0;
-}
-
-[dir="rtl"] #color {
-    margin-left: 10px;
-    margin-right: 0;
-}
-
-
 label {
     color: var(--neutral-foreground-rest);
     cursor: pointer;
-}
-
-.shell, .sourceCode {
-    background: var(--neutral-stroke-layer-rest);
-    padding: 7px;
 }
 
 code {
     background: var(--neutral-stroke-layer-rest);
 }
 
-.demopanel {
-    border: 1px dashed var(--accent-fill-rest);
-    padding: 5px;
-}
-
+/* QuickGrid */
 .highlighted-row {
     background-color: var(--accent-fill-rest);
 }
@@ -214,7 +183,7 @@ code {
     .highlighted-row > fluent-data-grid-cell {
         color: var(--neutral-fill-inverse-rest);
     }
-
+/**/
 
 kbd {
     padding: 0.10rem 0.25rem;
@@ -308,7 +277,6 @@ kbd {
             /*padding: 0 25px;*/
         }
 
-
     .body-stack {
         flex-direction: column !important;
     }
@@ -392,7 +360,6 @@ kbd {
 
 
     @media screen and (max-width: 767px) and (orientation: landscape) {
-
         nav {
             padding: 25px 40px;
         }
@@ -407,6 +374,7 @@ kbd {
     fluent-select::part(control) {
         width: 150px;
     }
+    
     .content {
         flex-direction: column;
     }
@@ -424,10 +392,8 @@ kbd {
     }
 }
 
-
 /* Surface Duo specific styling */
 @media (horizontal-viewport-segments: 2) {
-
     .siteheader {
         grid-area: header;
         display: grid;
@@ -484,17 +450,18 @@ kbd {
     }
 }
 
-
-
 @media (min-width: 800px) {
+    /* Dialog */
     .fluent-dialog-main {
         --dialog-width: 340px;
     }
+    /**/
 }
 
-
 @media (max-width: 480px) {
+    /* Dialog */
     .fluent-dialog-main {
         --dialog-width: 100vw;
     }
+    /**/
 }
