@@ -6,7 +6,7 @@
 
 <PageTitle>Fluent UI Blazor components demo page</PageTitle>
 
-<div id="container" @ref="_container">
+<div id="container">
     <FluentLayout>
         <FluentHeader Class="siteheader">
             <a href="/">
@@ -22,8 +22,8 @@
             <FluentSpacer />
             <div class="links">
                 <FluentAnchor Appearance="Appearance.Hypertext"
-                              Href="http://github.com/microsoft/fluentui-blazor" Target="_blank" Rel="noreferrer noopener"
-                              title="FluentUI Blazor source on GitHub" aria-label="FluentUI Blazor Repo">
+                              Href="https://github.com/FelipeCostaGualberto/fluentui-starter" Target="_blank" Rel="noreferrer noopener"
+                              title="FluentUI Blazor Starter source on GitHub" aria-label="FluentUI Blazor Repo">
                     <FluentIcon Value="@(new DemoIcons.Size20.GitHub())" Color="Color.FillInverse" />
                 </FluentAnchor>
             </div>
@@ -41,17 +41,12 @@
                 <div class="content">
                     <article id="article">
                         <FluentMessageBarProvider Section="@AppClient.MESSAGES_TOP" />
-
-                        <CascadingValue Value=@OnRefreshTableOfContents>
-                            @Body
-                        </CascadingValue>
+                        @Body
                     </article>
 
                     @if (Navigation.Uri != Navigation.BaseUri)
                     {
                         <aside>
-                            <TableOfContents @ref=_toc />
-                            <ConsoleLog />
                         </aside>
                     }
 
